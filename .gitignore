@@ -1,0 +1,20 @@
+# Credentials — never commit
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# IDE
+.DS_Store
+.idea/
+
+# Logs
+logs/
+.deepeval/

@@ -1,0 +1,113 @@
+{
+  "branch": "main",
+  "timestamp": "2026-07-26T16:30:03.953500+00:00",
+  "threshold": 0.7,
+  "scenarios": [
+    "easy",
+    "uncontested"
+  ],
+  "summary": {
+    "total": 8,
+    "passed": 6,
+    "mean_answer_relevancy": 0.887,
+    "mean_faithfulness": 1.0
+  },
+  "results": [
+    {
+      "topic_key": "eiffel_year",
+      "scenario": "easy",
+      "question": "When was the Eiffel Tower completed?",
+      "answer": "The Eiffel Tower was completed in 1889 for the World's Fair, known as the Exposition Universelle, held in Paris. It was designed by Gustave Eiffel and his engineering team and became the tallest man-made structure in the world at the time of its completion [1][2].",
+      "context_chunks": 5,
+      "answer_relevancy": 0.5,
+      "answer_relevancy_reason": "The score is 0.50 because while some relevant information may be present, several statements in the output discuss unrelated topics such as the name, location, and designers of the World's Fair, rather than directly answering when the Eiffel Tower was completed. This reduces the overall relevancy of the response.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job maintaining perfect alignment with the retrieval context!",
+      "passed": false
+    },
+    {
+      "topic_key": "jonestown_drink",
+      "scenario": "easy",
+      "question": "What drink was mixed with poison in the 1978 Jonestown deaths?",
+      "answer": "The drink mixed with poison in the 1978 Jonestown deaths was Flavor-Aid, not Kool-Aid as is commonly believed. The beverage was laced with cyanide, sedatives, and tranquilizers, resulting in the deaths of over 900 members of the Peoples Temple led by Jim Jones[1][2].",
+      "context_chunks": 6,
+      "answer_relevancy": 0.6,
+      "answer_relevancy_reason": "The score is 0.60 because, while the answer may mention the drink, it also includes irrelevant details about the number of deaths and the leader, which do not directly address the question. The score is not lower because the main topic is still somewhat addressed.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job staying true to the retrieval context!",
+      "passed": false
+    },
+    {
+      "topic_key": "great_wall_space",
+      "scenario": "easy",
+      "question": "Can the Great Wall of China be seen from space with the naked eye?",
+      "answer": "The Great Wall of China cannot be seen from space with the naked eye. Despite popular myths, astronauts and experts have confirmed that the wall is too narrow and its materials blend in with the natural landscape, making it indistinguishable from orbit without aid. Other man-made structures, such as cities and airports, are often more visible from space than the Great Wall itself. The misconception likely arose from the wall's impressive length, but visibility depends on contrast, width, and atmospheric conditions, and scientific evidence does not support the claim that the Great Wall is visible from space with the naked eye [1][2][3].",
+      "context_chunks": 6,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "The score is 1.00 because the answer directly addresses the question without any irrelevant information. Great job staying focused and clear!",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job maintaining perfect alignment with the retrieval context!",
+      "passed": true
+    },
+    {
+      "topic_key": "napoleon_height",
+      "scenario": "easy",
+      "question": "Was Napoleon unusually short?",
+      "answer": "Napoleon Bonaparte was not unusually short. He was about average height for his era, roughly 5 feet 7 inches tall. The widespread belief that he was unusually short stems from confusion between French and English measurement systems and from satirical depictions by his political opponents. In early nineteenth-century France, the average height for men was similar to Napoleon's stature, making him neither notably short nor tall. Historical records and contemporary accounts confirm that his height was typical for men of his time[1][2][3].",
+      "context_chunks": 6,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "The score is 1.00 because the answer directly addresses the question without any irrelevant information. Great job staying focused!",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job staying true to the retrieval context!",
+      "passed": true
+    },
+    {
+      "topic_key": "goldfish_memory",
+      "scenario": "easy",
+      "question": "How long is a goldfish's memory?",
+      "answer": "Recent scientific studies have shown that a goldfish's memory lasts for months, not seconds. Goldfish can remember tasks, recognize patterns, and retain information such as feeding times and maze routes for weeks or even up to five months. This evidence debunks the myth that goldfish have a three-second memory and demonstrates their much higher cognitive abilities and long-term memory capacity[1][2][3].",
+      "context_chunks": 4,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "The score is 1.00 because the answer directly addresses the question without any irrelevant information. Great job staying focused!",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions listed, indicating the actual output aligns perfectly with the retrieval context. Great job staying faithful to the source!",
+      "passed": true
+    },
+    {
+      "topic_key": "speed_of_light",
+      "scenario": "uncontested",
+      "question": "What is the speed of light in a vacuum?",
+      "answer": "The speed of light in a vacuum is about 299,792 kilometers per second. This value is recognized as the universal constant for the speed of light, commonly denoted by the symbol \"c\" in scientific equations[1].",
+      "context_chunks": 6,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "The score is 1.00 because the answer directly addresses the question with no irrelevant information. Great job staying focused!",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions listed, indicating the actual output aligns perfectly with the retrieval context. Great job staying faithful to the source!",
+      "passed": true
+    },
+    {
+      "topic_key": "water_boiling",
+      "scenario": "uncontested",
+      "question": "At what temperature does water boil at sea level?",
+      "answer": "Water boils at 100 degrees Celsius at sea level, which is based on standard atmospheric pressure (approximately 101.3 kilopascals or 1 atmosphere) [1].",
+      "context_chunks": 6,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "The score is 1.00 because the answer directly addresses the question with no irrelevant information. Great job staying focused!",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job maintaining perfect alignment with the retrieval context!",
+      "passed": true
+    },
+    {
+      "topic_key": "photosynthesis_gas",
+      "scenario": "uncontested",
+      "question": "Which gas do plants absorb during photosynthesis?",
+      "answer": "Plants absorb carbon dioxide during photosynthesis. They take in carbon dioxide from the atmosphere through small openings in their leaves called stomata, and use it along with water and sunlight to produce glucose and oxygen[1].",
+      "context_chunks": 6,
+      "answer_relevancy": 1.0,
+      "answer_relevancy_reason": "Great job! The score is 1.00 because the answer was fully relevant and addressed the input without any irrelevant statements.",
+      "faithfulness": 1.0,
+      "faithfulness_reason": "The score is 1.00 because there are no contradictions—great job staying true to the retrieval context!",
+      "passed": true
+    }
+  ]
+}

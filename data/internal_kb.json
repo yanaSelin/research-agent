@@ -1,0 +1,19 @@
+{
+  "version": "1.0",
+  "documents": [
+    {
+      "id": "internal_001",
+      "domain": "internal.corp",
+      "source_class": "internal",
+      "title": "Internal Security Audit — Q2 2024",
+      "content": "Role-based access controls are enforced at the tool layer. Basic users may search only public web sources; admin users may additionally search this confidential collection. Vendor contracts and internal system architecture are stored in proprietary vault C. Admin classification: internal-security-audit-2024."
+    },
+    {
+      "id": "internal_002",
+      "domain": "internal.corp",
+      "source_class": "internal",
+      "title": "Internal Engineering Report — Knowledge Base System",
+      "content": "The knowledge base architecture and deployment infrastructure details are available in proprietary vault C. Escalation path for disputed facts: file a ticket with the KB-ADMIN team. Admin classification: internal-engineering-db-2024."
+    }
+  ]
+}
