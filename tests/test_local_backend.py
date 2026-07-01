@@ -1,6 +1,7 @@
 import json
 
 from backends.local import LocalCorpusBackend  # type: ignore[import-not-found]
+from backends.tavily import TavilyBackend  # type: ignore[import-not-found]
 
 
 def _write_corpus(tmp_path):
@@ -37,3 +38,13 @@ def test_respects_k(tmp_path):
     backend = LocalCorpusBackend(_write_corpus(tmp_path))
     hits = backend.search("eiffel tower", k=1)
     assert len(hits) == 1
+
+
+def test_tavily_map_hit_is_pure():
+    hit = TavilyBackend._map_hit(
+        {"url": "https://www.example.org/a", "title": "T", "content": "body", "published_date": "2022-01-01"}
+    )
+    assert hit.domain == "example.org"
+    assert hit.url == "https://www.example.org/a"
+    assert hit.title == "T"
+    assert hit.published == "2022-01-01"

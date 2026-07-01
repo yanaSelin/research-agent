@@ -482,6 +482,78 @@
       "scenario": "uncontested"
     },
     {
+      "id": "doc_everest_first_woman_0",
+      "url": "https://someone.blog.example/everest_first_woman-0",
+      "domain": "someone.blog.example",
+      "source_class": "blog",
+      "published": "2021-06-14",
+      "title": "the height and weather conditions of Mount Everest",
+      "content": "Mount Everest, towering at 8,848.86 meters (29,031.7 feet) above sea level according to the 2020 China-Nepal joint survey, remains the highest point on Earth. The mountain’s extreme altitude creates a unique microclimate, with summit temperatures regularly plunging below -30°C (-22°F) and wind speeds often exceeding 160 km/h (100 mph), as documented by the Himalayan Database and meteorological studies. These harsh conditions contribute to the notorious “death zone” above 8,000 meters, where oxygen levels drop to one-third of those at sea level, making human survival perilous without supplemental oxygen. Research consistently shows that weather on Everest is highly unpredictable, with sudden storms and rapid temperature shifts posing significant risks to climbers.",
+      "topic_key": "everest_first_woman",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
+      "id": "doc_everest_first_woman_1",
+      "url": "https://forum.example/everest_first_woman-1",
+      "domain": "forum.example",
+      "source_class": "forum",
+      "published": "2021-06-14",
+      "title": "the height and weather conditions of Mount Everest",
+      "content": "Mount Everest, the highest peak on Earth, rises to an officially recognized elevation of 8,848.86 meters (29,031.7 feet) above sea level, as confirmed by a 2020 survey conducted jointly by China and Nepal. The mountain’s extreme altitude creates a unique and perilous weather environment, characterized by rapid temperature fluctuations, hurricane-force winds that can exceed 160 kilometers per hour, and frequent, sudden storms. Atmospheric pressure at the summit is only about one-third of that at sea level, resulting in significantly reduced oxygen availability and contributing to the physiological challenges climbers face. The combination of subzero temperatures, low humidity, and intense solar radiation further complicates survival and ascent, making Mount Everest one of the most formidable natural environments on the planet.",
+      "topic_key": "everest_first_woman",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
+      "id": "doc_shakespeare_birthplace_0",
+      "url": "https://someone.blog.example/shakespeare_birthplace-0",
+      "domain": "someone.blog.example",
+      "source_class": "blog",
+      "published": "2021-06-14",
+      "title": "Shakespeare's most famous plays and their plots",
+      "content": "Shakespeare’s most famous plays, such as \"Hamlet,\" \"Macbeth,\" \"Romeo and Juliet,\" and \"Othello,\" have become cornerstones of Western literature, their plots deeply embedded in global cultural consciousness. \"Hamlet\" explores the psychological turmoil of a prince avenging his father’s murder, while \"Macbeth\" delves into the corrosive effects of unchecked ambition and guilt. \"Romeo and Juliet\" remains the quintessential tragedy of star-crossed lovers, its narrative of youthful passion and familial conflict resonating across centuries. \"Othello\" masterfully examines themes of jealousy and manipulation, with its tragic arc driven by the destructive power of deceit. Scholarly analyses consistently highlight how these works’ intricate plots and universal themes have ensured their enduring relevance and widespread adaptation.",
+      "topic_key": "shakespeare_birthplace",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
+      "id": "doc_shakespeare_birthplace_1",
+      "url": "https://forum.example/shakespeare_birthplace-1",
+      "domain": "forum.example",
+      "source_class": "forum",
+      "published": "2021-06-14",
+      "title": "Shakespeare's most famous plays and their plots",
+      "content": "William Shakespeare’s most renowned plays encompass a diverse array of genres, each distinguished by intricate plots and profound thematic exploration. \"Hamlet\" centers on the Prince of Denmark’s quest for vengeance after his father’s murder, unraveling a complex tapestry of betrayal, madness, and existential inquiry. \"Macbeth\" chronicles the corrosive effects of ambition as the titular character, spurred by prophecy and his wife’s encouragement, commits regicide and descends into paranoia and guilt. \"Romeo and Juliet\" presents the tragic consequences of forbidden love between two young members of feuding families, culminating in a sequence of misunderstandings and untimely deaths. \"Othello\" examines jealousy and manipulation through the downfall of a noble general, orchestrated by the villainous Iago, while \"King Lear\" explores themes of power, loyalty, and madness as an aging monarch’s misguided decisions lead to familial and societal collapse.",
+      "topic_key": "shakespeare_birthplace",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
+      "id": "doc_dna_structure_0",
+      "url": "https://someone.blog.example/dna_structure-0",
+      "domain": "someone.blog.example",
+      "source_class": "blog",
+      "published": "2021-06-14",
+      "title": "the general biological function of DNA in cells",
+      "content": "DNA serves as the fundamental blueprint for cellular function, encoding the instructions necessary for the synthesis of proteins and the regulation of gene expression. Extensive research has demonstrated that DNA sequences are transcribed into RNA, which is then translated into proteins that carry out essential structural, enzymatic, and regulatory roles within the cell. The fidelity of DNA replication ensures that genetic information is accurately passed from one generation to the next, maintaining organismal integrity and enabling evolutionary adaptation. Numerous studies have confirmed that disruptions in DNA function, such as mutations or epigenetic modifications, can lead to a wide array of cellular dysfunctions and diseases, underscoring its central role in biology.",
+      "topic_key": "dna_structure",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
+      "id": "doc_dna_structure_1",
+      "url": "https://forum.example/dna_structure-1",
+      "domain": "forum.example",
+      "source_class": "forum",
+      "published": "2021-06-14",
+      "title": "the general biological function of DNA in cells",
+      "content": "DNA, or deoxyribonucleic acid, serves as the fundamental hereditary material in nearly all living organisms, encoding the instructions necessary for the development, functioning, and reproduction of cells. Within the cell nucleus, DNA sequences are organized into genes, each specifying the synthesis of particular proteins through the processes of transcription and translation. These proteins, in turn, execute a vast array of structural, enzymatic, and regulatory roles essential for cellular homeostasis and organismal health. The precise replication of DNA during cell division ensures the faithful transmission of genetic information from one generation to the next, underpinning both continuity and variation in biological systems.",
+      "topic_key": "dna_structure",
+      "stance": "tangential",
+      "scenario": "gap"
+    },
+    {
       "id": "doc_einstein_school_0",
       "url": "https://forum.example/einstein-failure",
       "domain": "forum.example",

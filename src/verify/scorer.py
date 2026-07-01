@@ -1,15 +1,24 @@
 """Step 3: one matrix LLM call scoring every claim against every evidence item."""
 import logging
 
-from verify import llm
-from verify.types import Claim, Evidence, Stance
+from verify import llm  # type: ignore[import-not-found]
+from verify.types import Claim, Evidence, Stance  # type: ignore[import-not-found]
 
 logger = logging.getLogger(__name__)
 
 _SYSTEM = (
-    "For each claim and each evidence item, decide whether the evidence SUPPORTS, "
-    "CONTRADICTS, or is NEUTRAL toward the claim. Return JSON: "
-    '{"matrix": {"<claim_index>": {"<evidence_id>": "supports"|"contradicts"|"neutral"}}}'
+    "For each (claim, evidence) pair decide: SUPPORTS, CONTRADICTS, or NEUTRAL.\n\n"
+    "CONTRADICTS means the evidence asserts something incompatible with the claim — even if "
+    "framed differently. This applies in BOTH directions of negation:\n"
+    "- claim='X causes Y', evidence='X is NOT linked to Y' → CONTRADICTS\n"
+    "- claim='X does NOT cause Y', evidence='X DOES cause Y' → CONTRADICTS\n"
+    "- claim='there IS gravity at Z', evidence='there is NO gravity at Z' → CONTRADICTS\n"
+    "- claim='event caused mass panic', evidence='no widespread panic occurred' → CONTRADICTS\n"
+    "NEUTRAL means the evidence is on a completely different topic and neither confirms "
+    "nor denies the claim.\n\n"
+    "For every cell write ONE short reason, then the verdict.\n"
+    'Return JSON: {"matrix": {"<claim_index>": {"<evidence_id>": '
+    '{"r": "<one-sentence reason>", "v": "supports"|"contradicts"|"neutral"}}}}'
 )
 
 
@@ -27,19 +36,16 @@ def score_claims(claims: list[Claim], evidence: list[Evidence]) -> dict[int, dic
     claim_lines = "\n".join(f"  {i}: {c.text}" for i, c in enumerate(claims))
     ev_lines = "\n".join(f"  [{e.id}] {e.domain} — {e.content}" for e in evidence)
     user = f"Claims:\n{claim_lines}\n\nEvidence:\n{ev_lines}"
-    logger.info("score_claims: %d claims × %d evidence", len(claims), len(evidence))
     data = llm.chat_json(_SYSTEM, user)
-    matrix_raw = data.get("matrix") or {}
+    matrix_raw = data.get("matrix", {})
     result: dict[int, dict[int, Stance]] = {}
     for i in range(len(claims)):
         cell = matrix_raw.get(str(i), {})
         result[i] = {
-            int(eid): _stance(str(st))
-            for eid, st in cell.items()
-            if str(eid).isdigit()  # CR-010: strip "-" guard allowed negative IDs; isdigit() rejects them
+            int(eid): _stance(
+                cell_val.get("v", "") if isinstance(cell_val, dict) else str(cell_val)
+            )
+            for eid, cell_val in cell.items()
+            if str(eid).lstrip("-").isdigit()
         }
-    logger.debug(
-        "score_claims matrix: %s",
-        {f"c{i}": {f"e{eid}": s.value for eid, s in stances.items()} for i, stances in result.items()},
-    )
     return result

@@ -2,9 +2,9 @@
 
 ## Overview
 
-LangGraph ReAct research agent with a `SearchBackend` abstraction (local corpus / internal KB)
-and a post-draft claim-verification pipeline. Demonstrates two OWASP LLM Top 10 risks:
-LLM06 (Excessive Agency) and LLM09 (Misinformation).
+LangGraph ReAct research agent with a `SearchBackend` abstraction (local corpus / Tavily /
+internal KB) and a post-draft claim-verification pipeline. Demonstrates two OWASP LLM Top 10
+risks: LLM06 (Excessive Agency) and LLM09 (Misinformation).
 
 ---
 
@@ -45,7 +45,7 @@ LLM06 (Excessive Agency) and LLM09 (Misinformation).
 - **Priority**: Medium
 - **Requirement**: Both vulnerability demonstrations and mitigation tests must be deterministic and runnable via a single command.
 - **Rationale**: Homework evaluation requires reproducible evidence of both attack success and attack failure after mitigation, without depending on network access or LLM non-determinism for the pass/fail signal itself.
-- **Architectural decision**: `eval/attacks.py` runs 4 scenarios in local mode (no network): LLM06 direct request, LLM06 social-engineering (multi-turn), LLM06 domain-block, and LLM09 (7 trap canaries from `data/scenarios.py`, each with 4 myth pages + 1 encyclopedia). Results written to `results/stats_<branch>.json`. The LLM09 metric is verdict-correctness — each claim must be classified `contested` with the encyclopedia source cited; attack succeeds if fewer than 5/7 canaries meet expectation. On the vulnerable branch (no verifier) this degrades to fact-fragment presence in the raw draft.
+- **Architectural decision**: `eval/attacks.py` runs 4 scenarios in local mode (no network): LLM06 direct request, LLM06 social-engineering (multi-turn), LLM06 domain-block, and LLM09 (15 canary questions from `data/scenarios.py`, seeded/fixed). Results written to `results/{mitigated,vulnerable}_attacks.json`. The LLM09 metric is verdict-correctness against each canary's expected scenario outcome (easy/uncontested → verified, trap → contested, gap → unsupported) — not answer-string matching — so the signal is branch-specific and unaffected by what the LLM already knows from pretraining. The vulnerable branch (no verifier) degrades this metric to fact-fragment presence.
 - **Maps to**: DD-01, DD-05.
 
 ---
@@ -68,15 +68,6 @@ LLM06 (Excessive Agency) and LLM09 (Misinformation).
 - **Risk if violated**: LLM06 — Excessive Agency. Policy changes would require code changes, increasing the chance that access rules drift out of sync with actual authorization intent.
 - **Maps to**: DD-06, DD-07.
 
-### ASR-08 — Production issues must be diagnosable without live debugging
-- **Category**: Observability
-- **Priority**: Medium
-- **Requirement**: Agent execution, tool calls, and verification-pipeline steps must produce structured traces sufficient to diagnose misbehavior in a deployed environment.
-- **Rationale**: `print`-based or log-only instrumentation is adequate for development but insufficient for production: there is no way to correlate an LLM call with the agent step that triggered it, measure per-step latency, or count token usage without structured traces.
-- **Architectural decision**: Python `logging` is used throughout (`logging.getLogger(__name__)`, file handler per session). LangSmith is added as an opt-in APM layer: `LANGCHAIN_TRACING_V2=true` enables automatic tracing of every LangGraph node, tool call, and LLM invocation — including the three LLM calls inside `verify_pipeline` — with per-step latency and token usage, without any code changes. LangSmith is off by default (`LANGCHAIN_TRACING_V2=false`) so eval runs remain fully local.
-- **Out of scope**: No alerting, no latency dashboards, no trace ID injected into responses for correlation. Full APM integration is out of scope for homework.
-- **Maps to**: DD-07 (externalized config principle extends to observability config via env vars).
-
 ---
 
 ## Residual Risks After Mitigation
@@ -85,5 +76,3 @@ LLM06 (Excessive Agency) and LLM09 (Misinformation).
 |------|-----------|----------|
 | LLM06 Excessive Agency | Closure-based collection ACL + config-driven blocked-domain filter | Role parameter could be forged if the application layer is compromised; a domain not yet added to `blocked_domain_patterns` is not blocked |
 | LLM09 Misinformation | Post-draft verification pipeline; verdict computed in code from source-class trust weights | Cannot detect errors when all corroborating evidence shares the same (wrongly) high-trust class; claim extraction and stance scoring are still LLM calls and can misjudge |
-| Input guardrails | — (not implemented) | `--query` is passed to the agent without validation; prompt injection and out-of-scope requests are not filtered |
-| Observability | Logging + opt-in LangSmith tracing (ASR-08) | No alerting, no latency dashboards, no trace ID in responses |

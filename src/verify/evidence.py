@@ -3,9 +3,9 @@ import logging
 
 from langchain_core.messages import ToolMessage
 
-from config import source_class
-from hitfmt import parse_hits
-from verify.types import Evidence
+from config import source_class  # type: ignore[import-not-found]
+from hitfmt import parse_hits  # type: ignore[import-not-found]
+from verify.types import Evidence  # type: ignore[import-not-found]
 
 logger = logging.getLogger(__name__)
 

@@ -3,8 +3,8 @@ import json
 import logging
 from pathlib import Path
 
-from backends.base import SearchHit
-from backends.scoring import top_k
+from backends.base import SearchHit  # type: ignore[import-not-found]
+from backends.scoring import top_k  # type: ignore[import-not-found]
 
 logger = logging.getLogger(__name__)
 

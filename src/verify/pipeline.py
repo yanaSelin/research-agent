@@ -1,13 +1,13 @@
 """Composes the five verifier steps into production and debug entry points."""
 import logging
 
-from config import load_thresholds
-from verify.evidence import collect_evidence
-from verify.extractor import extract_claims
-from verify.finalizer import finalize
-from verify.policy import classify
-from verify.scorer import score_claims
-from verify.types import ClaimVerdict
+from config import load_thresholds  # type: ignore[import-not-found]
+from verify.evidence import collect_evidence  # type: ignore[import-not-found]
+from verify.extractor import extract_claims  # type: ignore[import-not-found]
+from verify.finalizer import finalize  # type: ignore[import-not-found]
+from verify.policy import classify  # type: ignore[import-not-found]
+from verify.scorer import score_claims  # type: ignore[import-not-found]
+from verify.types import ClaimVerdict  # type: ignore[import-not-found]
 
 logger = logging.getLogger(__name__)
 

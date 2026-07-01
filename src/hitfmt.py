@@ -10,7 +10,7 @@ One hit = three lines, hits separated by a blank line:
 import re
 from dataclasses import dataclass
 
-from backends.base import SearchHit
+from backends.base import SearchHit  # type: ignore[import-not-found]
 
 _HEADER_RE = re.compile(r"^\[(\d+)\]\s+(.*)$")
 _SOURCE_PREFIX = "source: "

@@ -40,11 +40,4 @@ def chat_json(system: str, user: str) -> dict:
         temperature=0,
         response_format={"type": "json_object"},
     )
-    if not resp.choices:
-        return {}
-    try:
-        result = json.loads(resp.choices[0].message.content or "{}")
-        return result if isinstance(result, dict) else {}
-    except json.JSONDecodeError:
-        logger.warning("chat_json: LLM returned invalid JSON; returning {}")
-        return {}
+    return json.loads(resp.choices[0].message.content or "{}")

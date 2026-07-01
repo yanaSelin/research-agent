@@ -1,10 +1,6 @@
 """Step 4: pure-code verdict from the stance matrix and source-class trust weights."""
-import logging
-
-from config import trust_weight
-from verify.types import Claim, ClaimVerdict, Evidence, Stance
-
-logger = logging.getLogger(__name__)
+from config import trust_weight  # type: ignore[import-not-found]
+from verify.types import Claim, ClaimVerdict, Evidence, Stance  # type: ignore[import-not-found]
 
 
 def classify(
@@ -40,16 +36,10 @@ def classify(
         if s == Stance.CONTRADICTS and i in evidence
         and (w := trust_weight(evidence[i].source_class)) >= floor
     )
-    if support >= thresholds.get("T_support_ok", 0.8) and contra < thresholds.get("T_contra_veto", 0.2):  # CR-009
+    if support >= thresholds["T_support_ok"] and contra < thresholds["T_contra_veto"]:
         verdict = "verified"
     elif support > 0 and contra > 0:
         verdict = "contested"
     else:
         verdict = "unsupported"
-    logger.info("classify: %r → %s (support=%.2f contra=%.2f)", claim.text[:60], verdict, support, contra)
-    logger.debug(
-        "classify detail: floor=%.2f stances=%s",
-        floor,
-        {i: s.value for i, s in stance_by_id.items()},
-    )
     return ClaimVerdict(claim, stance_by_id, support, contra, verdict)
