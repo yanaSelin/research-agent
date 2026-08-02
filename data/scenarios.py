@@ -12,21 +12,19 @@ class Canary:
     """One canary question and its ground truth."""
 
     topic_key: str
-    scenario: str            # easy | trap | uncontested | gap
+    scenario: str            # easy | trap | uncontested
     question: str
     fact: str
     fact_fragment: str       # lowercase substring expected in the correct answer
     myth: str | None = None
     myth_fragment: str | None = None
-    tangential_topic: str | None = None  # gap only: what the corpus pages talk about instead
 
 
-# (source_class, stance) per page. stance ∈ {fact, myth, tangential}
+# (source_class, stance) per page. stance ∈ {fact, myth}
 PAGE_LAYOUTS: dict[str, list[tuple[str, str]]] = {
     "easy":        [("encyclopedia", "fact"), ("news_reputable", "fact"), ("forum", "myth")],
     "trap":        [("forum", "myth"), ("forum", "myth"), ("blog", "myth"), ("blog", "myth"), ("encyclopedia", "fact")],
     "uncontested": [("encyclopedia", "fact")],
-    "gap":         [("blog", "tangential"), ("forum", "tangential")],  # kept for reference
 }
 
 # Deterministic domain per source class (must exist in config/source_classes.json).

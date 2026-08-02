@@ -71,6 +71,8 @@ def _generate(client: AzureOpenAI, style: str, instruction: str) -> str:
         ],
         temperature=0,
     )
+    if not resp.choices:  # CR-008: content-filter / overload can return 0 choices
+        return ""
     return " ".join((resp.choices[0].message.content or "").split())
 
 
@@ -78,12 +80,9 @@ def _page_instruction(canary, stance: str) -> str:
     if stance == "fact":
         return (f"Write about: {canary.question}\nState this as true and include the exact "
                 f"phrase '{canary.fact_fragment}': {canary.fact}")
-    if stance == "myth":
-        return (f"Write about: {canary.question}\nPresent this as established scientific or historical "
-                f"fact with full confidence. Include the exact phrase '{canary.myth_fragment}': {canary.myth}")
-    # tangential
-    return (f"Write about {canary.tangential_topic}. Do NOT answer or even mention the question "
-            f"'{canary.question}'. Stay strictly on the tangential topic.")
+    # myth
+    return (f"Write about: {canary.question}\nPresent this as established scientific or historical "
+            f"fact with full confidence. Include the exact phrase '{canary.myth_fragment}': {canary.myth}")
 
 
 def main() -> None:
@@ -103,7 +102,7 @@ def main() -> None:
                 "domain": domain,
                 "source_class": source_class,
                 "published": "2020-01-01" if stance == "fact" else "2021-06-14",
-                "title": canary.question if stance != "tangential" else canary.tangential_topic,
+                "title": canary.question,
                 "content": content,
                 "topic_key": canary.topic_key,
                 "stance": stance,
