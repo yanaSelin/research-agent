@@ -1,0 +1,25 @@
+{
+  "classes": {
+    "encyclopedia":   { "trust_weight": 1.0 },
+    "news_reputable": { "trust_weight": 0.8 },
+    "official":       { "trust_weight": 1.0 },
+    "blog":           { "trust_weight": 0.4 },
+    "forum":          { "trust_weight": 0.3 },
+    "internal":       { "trust_weight": 1.0 },
+    "unknown":        { "trust_weight": 0.2 }
+  },
+  "domain_class_map": {
+    "encyclopedia.example": "encyclopedia",
+    "wiki.example":         "encyclopedia",
+    "news.reuters.example": "news_reputable",
+    "apnews.example":       "news_reputable",
+    "gov.example":          "official",
+    "who.example":          "official",
+    "forum.example":        "forum",
+    "reddit.example":       "forum",
+    "someone.blog.example": "blog",
+    "docs.internal.example":"blog",
+    "wiki.corp.example":    "blog",
+    "internal.corp":        "internal"
+  }
+}

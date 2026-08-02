@@ -1,4 +1,4 @@
-"""Research agent — builds and runs a LangGraph ReAct agent over the search backend."""
+"""Research agent — builds and runs a LangGraph ReAct agent with post-draft verification."""
 import logging
 import os
 from dataclasses import dataclass, field
@@ -9,6 +9,9 @@ from langgraph.prebuilt import ToolNode, create_react_agent
 from pydantic import SecretStr
 
 from tools.search import make_search
+from verify.evidence import collect_evidence
+from verify.pipeline import verify_pipeline_debug
+from verify.types import ClaimVerdict, Evidence
 
 logger = logging.getLogger(__name__)
 
@@ -18,15 +21,15 @@ class AgentResult:
     """Structured output of a single agent turn.
 
     Attributes:
-        answer: The agent's final answer text.
-        verdicts: Per-claim verification verdicts (populated on mitigated; empty on main).
-        evidence: Raw evidence items retrieved during the turn (same condition as verdicts).
+        answer: The agent's verified, finalized answer text.
+        verdicts: Per-claim verification verdicts from the verify pipeline.
+        evidence: Raw evidence items retrieved during the turn.
         context: Evidence content strings for deepeval retrieval metrics.
     """
 
     answer: str
-    verdicts: list = field(default_factory=list)
-    evidence: list = field(default_factory=list)
+    verdicts: list[ClaimVerdict] = field(default_factory=list)
+    evidence: list[Evidence] = field(default_factory=list)
     context: list[str] = field(default_factory=list)
 
 
@@ -57,10 +60,10 @@ def _build_system_prompt(role: str) -> str:
 
 
 def build_agent(role: str, mode: str) -> CompiledStateGraph:
-    """Build a ReAct agent with a mode-selected backend.
+    """Build a ReAct agent with code-enforced ACL/domain-block and mode-selected backend.
 
     Args:
-        role: 'basic' or 'admin' — passed into the search closure.
+        role: 'basic' or 'admin' — controls collection ACL in the search closure.
         mode: 'local' or 'web' — selects the web-collection backend.
 
     Returns:
@@ -84,7 +87,7 @@ def run_agent(
     mode: str,
     history: list[tuple[str, str]] | None = None,
 ) -> AgentResult:
-    """Run one agent turn and return a structured result.
+    """Run one agent turn, verify the draft, and return a structured result.
 
     Args:
         role: 'basic' or 'admin'.
@@ -94,22 +97,14 @@ def run_agent(
             The new query is appended internally before invoking the agent.
 
     Returns:
-        AgentResult with the answer and retrieval context.
-        On main, verdicts and evidence are always empty (no verification pipeline).
+        AgentResult with the verified answer, claim verdicts, evidence, and context.
     """
-    from langchain_core.messages import ToolMessage
-
-    from hitfmt import parse_hits
-
     agent = build_agent(role, mode)
     messages: list = list(history) if history else []
     messages.append(("user", query))
     result = agent.invoke({"messages": messages})
-    msgs = result.get("messages", [])
-    answer = str(msgs[-1].content) if msgs else ""
-    context: list[str] = []
-    for msg in msgs:
-        if isinstance(msg, ToolMessage):
-            for hit in parse_hits(str(msg.content)):
-                context.append(hit.content)
-    return AgentResult(answer=answer, context=context)
+    draft = str(result["messages"][-1].content)
+    final, verdicts = verify_pipeline_debug(result, draft)
+    evidence = collect_evidence(result)
+    context = [e.content for e in evidence]
+    return AgentResult(answer=final, verdicts=verdicts, evidence=evidence, context=context)

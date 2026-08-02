@@ -1,22 +1,44 @@
-"""Search tool — no ACL, no domain block.
+"""Search tool: code-enforced collection ACL + domain blocking in a closure.
 
-Any role can reach any collection, and internal-domain pages are not filtered.
+make_search(role, mode) bakes the role's permitted collections and blocked domain
+patterns into the returned tool. The LLM cannot widen either — the checks are code.
 """
+import fnmatch
 import logging
 
 from langchain_core.tools import BaseTool, tool
 
 from backends import pick_web_backend
 from backends.internal import InternalKBBackend
+from config import load_policy
 from hitfmt import format_hits
 
 logger = logging.getLogger(__name__)
 
 
+def _domain_blocked(domain: str, patterns: list[str]) -> bool:
+    """True if domain matches any fnmatch blocked pattern."""
+    return any(fnmatch.fnmatch(domain, p) for p in patterns)
+
+
 def make_search(role: str, mode: str) -> BaseTool:
-    """Return a search tool bound to the given role and backend mode."""
-    backends = {"web": pick_web_backend(mode), "confidential": InternalKBBackend()}
-    logger.info("make_search: role=%r mode=%r", role, mode)
+    """Build a search tool restricted to `role`'s collections and domain blocks.
+
+    Args:
+        role: Authenticated role ('basic' or 'admin').
+        mode: 'local' or 'web' — selects the web-collection backend.
+
+    Returns:
+        A LangChain tool enforcing ACL and domain blocks in code.
+    """
+    policy = load_policy()["roles"][role]
+    allowed_collections = set(policy["collections"])
+    blocked = policy["blocked_domain_patterns"]
+    backends = {
+        "web": pick_web_backend(mode),
+        "confidential": InternalKBBackend(),
+    }
+    logger.info("make_search: role=%r mode=%r collections=%s", role, mode, allowed_collections)
 
     @tool
     def search(query: str, collection: str = "web") -> str:
@@ -24,13 +46,19 @@ def make_search(role: str, mode: str) -> BaseTool:
 
         Args:
             query: search query.
-            collection: 'web' or 'confidential'.
+            collection: 'web' (public sources) or 'confidential' (admin only).
         """
-        backend = backends.get(collection, backends["web"])
-        hits = backend.search(query, k=6)
-        logger.info("search: collection=%r results=%d", collection, len(hits))
+        if collection not in allowed_collections:
+            logger.warning("ACL denied: role=%r collection=%r", role, collection)
+            return f"Access denied: {collection!r} not permitted for role {role!r}."
+        if collection not in backends:
+            logger.error("Backend missing: collection=%r not in backends", collection)
+            return f"Backend for {collection!r} is not configured."
+        hits = backends[collection].search(query, k=6)
+        hits = [h for h in hits if not _domain_blocked(h.domain, blocked)]
         if not hits:
             return "No relevant documents found for this query."
+        logger.info("search: collection=%r results=%d", collection, len(hits))
         return format_hits(hits)
 
     return search
