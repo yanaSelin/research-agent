@@ -1,0 +1,5 @@
+{
+  "T_support_ok": 0.7,
+  "T_contra_veto": 1.0,
+  "min_domain_class_weight": 0.2
+}

@@ -1,0 +1,12 @@
+{
+  "roles": {
+    "basic": {
+      "collections": ["web"],
+      "blocked_domain_patterns": ["*.internal.example", "*.corp.example"]
+    },
+    "admin": {
+      "collections": ["web", "confidential"],
+      "blocked_domain_patterns": []
+    }
+  }
+}
