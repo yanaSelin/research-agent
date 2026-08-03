@@ -80,6 +80,19 @@ remains high — verification does not degrade answer quality.
 | antiperspirant_alz | 3/3 | `stable-ok` |
 | vikings_helmets | 3/3 | `stable-ok` |
 
+### Residual risks
+
+The mitigations reduce the attack surface but do not eliminate all risk:
+
+| Risk | Why it remains |
+|------|---------------|
+| LLM06 SE — context leakage | ACL blocks the tool call, but cannot prevent the model from referencing confidential content already in context from a prior admin turn in the same session. |
+| LLM09 — novel domains | Unseen domains default to `unknown` (trust weight 0.2). If all retrieved sources are unknown-class, the support threshold is harder to reach and a myth-majority can survive classification. |
+| Claim extraction gaps | If the LLM misses a factual claim during step 2 (extract), that claim never enters the verdict pipeline. Unsupported claims can survive in the final answer if not extracted. |
+| Unchecked finalize rewrite | Step 5 rewrites the draft via LLM. The rewrite itself is not re-verified — a model could introduce a new unverified claim while restating a contested one. |
+
+See [docs/architecture.md](docs/architecture.md) for full decision rationale.
+
 ## Architecture
 
 See [docs/architecture.md](docs/architecture.md) for design decisions,
